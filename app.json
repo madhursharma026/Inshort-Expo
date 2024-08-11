@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Inshorts",
-    "slug": "Inshorts",
+    "name": "inshorts-clone",
+    "slug": "inshorts-clone",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,7 +12,10 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -22,7 +25,8 @@
       "permissions": [
         "INTERNET"
       ],
-      "package": "com.madhur_sharma026.Inshorts"
+      "package": "com.madhur_sharma026.Inshorts",
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -32,6 +36,9 @@
         "projectId": "9ab30e85-aada-47f0-8e38-107653ab4ba3"
       }
     },
-    "owner": "madhur_sharma026"
+    "owner": "madhur_sharma026",
+    "updates": {
+      "url": "https://u.expo.dev/9ab30e85-aada-47f0-8e38-107653ab4ba3"
+    }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "Inshorts",
+  "name": "inshorts-clone",
   "version": "1.0.0",
   "main": "expo/AppEntry.js",
   "scripts": {
@@ -23,7 +23,8 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-tab-view": "^3.5.2",
     "react-native-web": "~0.19.10",
-    "react-native-webview": "13.8.6"
+    "react-native-webview": "13.8.6",
+    "expo-updates": "~0.25.22"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
