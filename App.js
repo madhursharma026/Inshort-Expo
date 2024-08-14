@@ -475,16 +475,17 @@ import Settings from "./screens/Setting";
 import ContactUs from "./screens/ContactUs";
 import NewsScreen from "./screens/NewsScreen";
 import LinkViewer from "./components/LinkViewer";
+import { LogBox, StatusBar } from "react-native";
 import BookmarkNews from "./screens/BookmarkNews";
 import { ThemeProvider } from "./API/ThemeContext";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import DiscoverScreen from "./screens/DiscoverScreen";
 import TermsOfService from "./screens/TermsOfService";
-import { LogBox, StatusBar, View } from "react-native";
 import { BookmarkProvider } from "./API/BookmarkContext";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { CommonActions, NavigationContainer } from "@react-navigation/native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 LogBox.ignoreAllLogs();
 const Tab = createBottomTabNavigator();
@@ -614,20 +615,18 @@ function MyTabs() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <BookmarkProvider>
-        <View
-          style={{
-            flex: 1,
-            paddingTop: StatusBar.currentHeight,
-          }}
-        >
-          <NavigationContainer>
-            <MyTabs />
-          </NavigationContainer>
-        </View>
-      </BookmarkProvider>
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <BookmarkProvider>
+          <SafeAreaView style={{ flex: 1 }}>
+            <StatusBar />
+            <NavigationContainer>
+              <MyTabs />
+            </NavigationContainer>
+          </SafeAreaView>
+        </BookmarkProvider>
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }
 
