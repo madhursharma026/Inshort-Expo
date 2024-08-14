@@ -1,4 +1,3 @@
-import React, {useState} from 'react';
 import {
   Text,
   View,
@@ -6,24 +5,28 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
-} from 'react-native';
-import ImageViewer from '../components/ImageViewer';
-import {useBookmarks} from '../API/BookmarkContext';
-import {useNavigation} from '@react-navigation/native';
+} from "react-native";
+import React, { useState } from "react";
+import ImageViewer from "../components/ImageViewer";
+import { useBookmarks } from "../API/BookmarkContext";
+import useDynamicStyles from "../API/UseDynamicStyles";
+import { useNavigation } from "@react-navigation/native";
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 const imageHeight = windowHeight * 0.3;
 
-const SingleNews = ({item}) => {
+const SingleNews = ({ item }) => {
   const navigation = useNavigation();
-  const {bookmarkedArticles, toggleBookmark} = useBookmarks();
+  const { bookmarkedArticles, toggleBookmark } = useBookmarks();
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedImageUri, setSelectedImageUri] = useState('');
+  const [selectedImageUri, setSelectedImageUri] = useState("");
 
-  const isBookmarked = bookmarkedArticles.some(a => a.url === item.url);
+  const dynamicStyles = useDynamicStyles();
 
-  const handleImagePress = imageURI => {
+  const isBookmarked = bookmarkedArticles.some((a) => a.url === item.url);
+
+  const handleImagePress = (imageURI) => {
     setSelectedImageUri(imageURI);
     setIsModalVisible(true);
   };
@@ -41,26 +44,39 @@ const SingleNews = ({item}) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, dynamicStyles.backgroundColor]}>
       <TouchableOpacity
         onPress={() => handleImagePress(item.urlToImage)}
-        style={styles.imageContainer}>
-        <Image source={{uri: item.urlToImage}} style={styles.imageBackground} />
+        style={styles.imageContainer}
+      >
+        <Image
+          source={{ uri: item.urlToImage }}
+          style={styles.imageBackground}
+        />
       </TouchableOpacity>
-      <View style={styles.description}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.content}>{item.description}</Text>
+      <View style={[styles.description, dynamicStyles.backgroundColor]}>
+        <Text style={[styles.title, dynamicStyles.textColor]}>
+          {item.title}
+        </Text>
+        <Text style={[styles.content, dynamicStyles.textColor]}>
+          {item.description}
+        </Text>
         <View style={styles.footer}>
-          <Text>
-            Short by{' '}
-            <Text style={styles.author}>{item.author ?? 'unknown'}</Text>
+          <Text style={dynamicStyles.textColor}>
+            Short by{" "}
+            <Text style={styles.author}>{item.author ?? "unknown"}</Text>
           </Text>
           <TouchableOpacity
             onPress={handleBookmarkPress}
-            style={styles.bookmarkButton}>
+            style={styles.bookmarkButton}
+          >
             <Text
-              style={[styles.bookmarkText, isBookmarked && styles.bookmarked]}>
-              {isBookmarked ? '🔖 Bookmarked' : '🔖 Bookmark'}
+              style={[
+                styles.bookmarkText,
+                isBookmarked ? styles.bookmarked : dynamicStyles.textColor,
+              ]}
+            >
+              {isBookmarked ? "🔖 Bookmarked" : "🔖 Bookmark"}
             </Text>
           </TouchableOpacity>
         </View>
@@ -70,15 +86,20 @@ const SingleNews = ({item}) => {
         imageUri={selectedImageUri}
         onClose={handleCloseModal}
       />
-      <View style={styles.readMoreFooter}>
+      <View
+        style={[styles.readMoreFooter, dynamicStyles.footerBackgroundColor]}
+      >
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate('LinkViewer', {LinkURL: item.url})
-          }>
-          <Text style={styles.readMoreContent}>
+            navigation.navigate("LinkViewer", { LinkURL: item.url })
+          }
+        >
+          <Text style={[styles.readMoreContent, dynamicStyles.footerTextColor]}>
             {item?.readMoreContent?.slice(0, 80)}...
           </Text>
-          <Text style={styles.readMoreText}>Read More</Text>
+          <Text style={[styles.readMoreText, dynamicStyles.footerTextColor]}>
+            Read More
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -91,17 +112,16 @@ const styles = StyleSheet.create({
     height: windowHeight - 60,
   },
   imageContainer: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   imageBackground: {
-    width: '100%',
+    width: "100%",
     height: imageHeight,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   description: {
     flex: 1,
     padding: 15,
-    backgroundColor: 'white',
   },
   title: {
     fontSize: 18,
@@ -110,44 +130,40 @@ const styles = StyleSheet.create({
   content: {
     fontSize: 15,
     paddingBottom: 10,
-    fontWeight: '300',
+    fontWeight: "300",
   },
   author: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   bookmarkButton: {
     padding: 10,
   },
   bookmarkText: {
     fontSize: 18,
-    color: 'black',
   },
   bookmarked: {
-    color: 'green',
-    fontWeight: 'bold',
+    color: "green",
+    fontWeight: "bold",
   },
   readMoreFooter: {
-    bottom: 0,
+    bottom: 10,
     height: 80,
     padding: 15,
-    width: '100%',
-    position: 'absolute',
-    justifyContent: 'center',
-    backgroundColor: '#4d4a4a',
+    width: "100%",
+    position: "absolute",
+    justifyContent: "center",
   },
   readMoreContent: {
     fontSize: 15,
-    color: 'white',
   },
   readMoreText: {
     fontSize: 15,
-    color: 'white',
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 

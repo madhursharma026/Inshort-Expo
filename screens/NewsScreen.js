@@ -1,9 +1,10 @@
-import {APIURL} from '../API/api';
-import Carousel from 'react-native-snap-carousel';
-import SingleNews from '../components/SingleNews';
-import React, {useState, useEffect, useCallback} from 'react';
-import {Dimensions, StyleSheet, View, Text} from 'react-native';
-import {ApolloClient, InMemoryCache, gql, useQuery} from '@apollo/client';
+import { APIURL } from "../API/api";
+import Carousel from "react-native-snap-carousel";
+import SingleNews from "../components/SingleNews";
+import React, { useState, useEffect } from "react";
+import useDynamicStyles from "../API/UseDynamicStyles";
+import { Dimensions, StyleSheet, View, Text } from "react-native";
+import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 
 const client = new ApolloClient({
   uri: APIURL,
@@ -14,33 +15,31 @@ const GET_NEWS_QUERY = gql`
   query GetNews {
     news {
       id
+      url
+      title
       author
+      urlToImage
       description
       publishedAt
       readMoreContent
-      title
-      url
-      urlToImage
     }
   }
 `;
 
 const NewsScreen = () => {
-  const [error, setError] = useState(null);
+  const dynamicStyles = useDynamicStyles();
   const [articles, setArticles] = useState([]);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const windowHeight = Dimensions.get('window').height;
+  const windowHeight = Dimensions.get("window").height;
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const {data} = await client.query({
-          query: GET_NEWS_QUERY,
-        });
+        const { data } = await client.query({ query: GET_NEWS_QUERY });
         setArticles(data.news);
-      } catch (error) {
-        setError(error.message);
+      } catch (err) {
+        setError(err.message);
       } finally {
         setLoading(false);
       }
@@ -49,46 +48,47 @@ const NewsScreen = () => {
     fetchArticles();
   }, []);
 
-  const handleSnapToItem = useCallback(index => {
-    setActiveIndex(index);
-  }, []);
+  const renderCarouselItem = ({ item, index }) => (
+    <SingleNews item={item} index={index} />
+  );
 
-  if (loading) {
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <Text style={[styles.messageText, dynamicStyles.textColor]}>
+          Loading articles...
+        </Text>
+      );
+    }
+    if (error) {
+      return (
+        <Text style={[styles.messageText, dynamicStyles.textColor]}>
+          Error: {error}
+        </Text>
+      );
+    }
+    if (articles.length === 0) {
+      return (
+        <Text style={[styles.messageText, dynamicStyles.textColor]}>
+          No articles available
+        </Text>
+      );
+    }
     return (
-      <View style={styles.container}>
-        <Text style={styles.loadingText}>Loading articles...</Text>
-      </View>
+      <Carousel
+        layout="default"
+        data={articles}
+        sliderHeight={windowHeight}
+        itemHeight={windowHeight}
+        vertical
+        renderItem={renderCarouselItem}
+      />
     );
-  }
-
-  if (error) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.errorText}>Error: {error}</Text>
-      </View>
-    );
-  }
+  };
 
   return (
-    <View style={styles.carousel}>
-      {articles.length > 0 ? (
-        <Carousel
-          firstItem={0}
-          layout="default"
-          data={articles}
-          sliderHeight={windowHeight}
-          itemHeight={windowHeight}
-          vertical
-          renderItem={({item, index}) => (
-            <SingleNews item={item} index={index} />
-          )}
-          onSnapToItem={handleSnapToItem}
-        />
-      ) : (
-        <View style={styles.noArticlesContainer}>
-          <Text style={styles.noArticlesText}>No articles available</Text>
-        </View>
-      )}
+    <View style={[styles.container, dynamicStyles.backgroundColor]}>
+      {renderContent()}
     </View>
   );
 };
@@ -96,32 +96,12 @@ const NewsScreen = () => {
 export default NewsScreen;
 
 const styles = StyleSheet.create({
-  carousel: {
-    flex: 1,
-    backgroundColor: 'black',
-  },
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'black',
+    alignItems: "center",
+    justifyContent: "center",
   },
-  loadingText: {
+  messageText: {
     fontSize: 18,
-    color: 'white',
-  },
-  errorText: {
-    color: 'red',
-    fontSize: 18,
-  },
-  noArticlesContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'black',
-  },
-  noArticlesText: {
-    fontSize: 18,
-    color: 'white',
   },
 });

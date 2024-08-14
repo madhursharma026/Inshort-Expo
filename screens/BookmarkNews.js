@@ -1,19 +1,23 @@
-import React from 'react';
-import Carousel from 'react-native-snap-carousel';
-import {useBookmarks} from '../API/BookmarkContext';
-import {Text, View, StyleSheet, Dimensions} from 'react-native';
-import BookmarkSingleNews from '../components/BookmarkSingleNews';
+import React from "react";
+import Carousel from "react-native-snap-carousel";
+import { useBookmarks } from "../API/BookmarkContext";
+import { Text, View, StyleSheet, Dimensions } from "react-native";
+import BookmarkSingleNews from "../components/BookmarkSingleNews";
+import UseDynamicStyles from "../API/UseDynamicStyles"; // Import the dynamic styles hook
 
-const {height: windowHeight} = Dimensions.get('window');
+const { height: windowHeight } = Dimensions.get("window");
 
 const BookmarkNews = () => {
-  const {bookmarkedArticles} = useBookmarks();
+  const { bookmarkedArticles } = useBookmarks();
+  const dynamicStyles = UseDynamicStyles(); // Get dynamic styles based on the theme
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, dynamicStyles.backgroundColor]}>
       {bookmarkedArticles.length === 0 ? (
         <View style={styles.noBookmarksContainer}>
-          <Text style={styles.noBookmarksText}>There are no bookmarks</Text>
+          <Text style={[styles.noBookmarksText, dynamicStyles.textColor]}>
+            There are no bookmarks
+          </Text>
         </View>
       ) : (
         <Carousel
@@ -23,7 +27,7 @@ const BookmarkNews = () => {
           sliderHeight={windowHeight}
           itemHeight={windowHeight}
           vertical
-          renderItem={({item, index}) => (
+          renderItem={({ item, index }) => (
             <BookmarkSingleNews item={item} index={index} />
           )}
           containerCustomStyle={styles.carousel}
@@ -42,13 +46,13 @@ const styles = StyleSheet.create({
   },
   noBookmarksContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   noBookmarksText: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#888',
+    fontWeight: "bold",
+    color: "#888", // Fallback color, will be overridden by dynamic styles
   },
 });
 

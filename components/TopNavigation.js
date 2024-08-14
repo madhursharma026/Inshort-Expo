@@ -1,12 +1,12 @@
-import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 
-export default function TopNavigation({index, setIndex, navigation}) {
+export default function TopNavigation({ index, setIndex, navigation }) {
   const handleLeftPress = () => {
     switch (index) {
       case 0:
-        navigation.navigate('ContactUs');
+        navigation.navigate("ContactUs");
         break;
       case 1:
         setIndex(0);
@@ -28,7 +28,7 @@ export default function TopNavigation({index, setIndex, navigation}) {
         setIndex(2);
         break;
       case 2:
-        navigation.navigate('TermsOfService');
+        navigation.navigate("TermsOfService");
         break;
       default:
         break;
@@ -103,7 +103,7 @@ export default function TopNavigation({index, setIndex, navigation}) {
     <View style={styles.container}>
       {leftButton()}
       <Text style={styles.centerText}>
-        {index === 0 ? 'Discover' : index === 1 ? 'All News' : 'Bookmark'}
+        {index === 0 ? "Discover" : index === 1 ? "All News" : "Bookmark"}
       </Text>
       {rightButton()}
     </View>
@@ -114,37 +114,37 @@ const styles = StyleSheet.create({
   container: {
     height: 60,
     padding: 10,
-    alignItems: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    flexDirection: "row",
     borderBottomWidth: 0.5,
-    backgroundColor: '#282C35',
-    borderBottomColor: 'black',
-    justifyContent: 'space-between',
+    backgroundColor: "#282C35",
+    borderBottomColor: "black",
+    justifyContent: "space-between",
   },
   centerText: {
     fontSize: 16,
-    color: 'white',
+    color: "white",
     paddingBottom: 6,
-    fontWeight: '700',
+    fontWeight: "700",
     borderBottomWidth: 5,
-    borderBottomColor: '#007FFF',
+    borderBottomColor: "#007FFF",
   },
   left: {
     width: 80,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   textLight: {
     fontSize: 16,
-    color: 'lightgrey',
+    color: "lightgrey",
   },
   textWhite: {
     fontSize: 16,
-    color: 'white',
+    color: "white",
   },
   right: {
     width: 80,
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
   },
 });
