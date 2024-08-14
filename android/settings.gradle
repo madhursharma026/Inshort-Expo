@@ -1,4 +1,4 @@
-rootProject.name = 'Inshorts'
+rootProject.name = 'inshorts-clone'
 
 dependencyResolutionManagement {
   versionCatalogs {
