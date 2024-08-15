@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   container: {
     width: windowWidth,
     height: windowHeight - 70,
-    paddingBottom: Platform.OS === "ios" ? 90 : 60, // Adjust the bottom padding for iOS devices
+    paddingBottom: Platform.OS === "ios" ? 60 : 60, // Adjust the bottom padding for iOS devices
   },
   imageContainer: {
     backgroundColor: "white",
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   },
   readMoreFooter: {
     bottom: 0,
-    height: 80,
+    height: 70,
     padding: 15,
     width: "100%",
     position: Platform.OS === "ios" ? "relative" : "absolute", // Position relative for iOS
