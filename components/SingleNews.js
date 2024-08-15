@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   container: {
     width: windowWidth,
     height: windowHeight - 70,
-    paddingBottom: Platform.OS === "ios" ? 90 : 70, // Adjust the bottom padding for iOS devices
+    paddingBottom: Platform.OS === "ios" ? 90 : 60, // Adjust the bottom padding for iOS devices
   },
   imageContainer: {
     backgroundColor: "white",
