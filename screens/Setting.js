@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "../API/ThemeContext";
 import useDynamicStyles from "../API/UseDynamicStyles";
 import { useNavigation } from "@react-navigation/native";
@@ -7,6 +9,17 @@ const Settings = () => {
   const navigation = useNavigation();
   const dynamicStyles = useDynamicStyles();
   const { isDarkMode, toggleTheme } = useTheme();
+  const [language, setLanguage] = useState("English");
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownVisible((prevVisible) => !prevVisible);
+  };
+
+  const handleLanguageChange = (lang) => {
+    setLanguage(lang);
+    setDropdownVisible(false);
+  };
 
   return (
     <View style={[styles.container, dynamicStyles.backgroundColor]}>
@@ -54,8 +67,41 @@ const Settings = () => {
         <Text style={[styles.settingText, dynamicStyles.textColor]}>
           Language
         </Text>
-        <Text style={styles.settingLink}>English</Text>
+        <TouchableOpacity
+          onPress={toggleDropdown}
+          style={styles.languageButton}
+        >
+          <Text style={[styles.languageText, dynamicStyles.textColor]}>
+            {language}
+          </Text>
+          <Ionicons
+            name={dropdownVisible ? "chevron-up" : "chevron-down"}
+            size={16}
+            color={dynamicStyles.textColor.color}
+          />
+        </TouchableOpacity>
       </View>
+
+      {dropdownVisible && (
+        <View style={[styles.dropdown, dynamicStyles.footerBackgroundColor]}>
+          <TouchableOpacity
+            onPress={() => handleLanguageChange("English")}
+            style={styles.dropdownItem}
+          >
+            <Text style={[styles.dropdownText, dynamicStyles.footerTextColor]}>
+              English
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleLanguageChange("Hindi")}
+            style={styles.dropdownItem}
+          >
+            <Text style={[styles.dropdownText, dynamicStyles.footerTextColor]}>
+              Hindi
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
@@ -72,18 +118,42 @@ const styles = StyleSheet.create({
   },
   settingItem: {
     paddingVertical: 12,
-    flexDirection: "row",
-    alignItems: "center",
     borderBottomWidth: 1,
+    alignItems: "center",
+    flexDirection: "row",
     borderBottomColor: "#ccc",
     justifyContent: "space-between",
   },
   settingText: {
     fontSize: 16,
   },
-  settingLink: {
+  languageButton: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  languageText: {
     fontSize: 16,
-    color: "#007bff",
+    marginRight: 8,
+  },
+  dropdown: {
+    top: 180,
+    right: 20,
+    zIndex: 1000,
+    elevation: 5,
+    shadowRadius: 2,
+    borderRadius: 5,
+    shadowOpacity: 0.8,
+    shadowColor: "#000",
+    position: "absolute",
+    shadowOffset: { width: 0, height: 2 },
+  },
+  dropdownItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+  },
+  dropdownText: {
+    fontSize: 16,
   },
 });
 

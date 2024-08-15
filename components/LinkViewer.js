@@ -120,7 +120,6 @@
 // });
 
 // export default LinkViewer;
-import React, { useState } from "react";
 import {
   View,
   Text,
@@ -130,6 +129,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import React, { useState } from "react";
 import * as Clipboard from "expo-clipboard";
 import { Ionicons } from "@expo/vector-icons";
 import { WebView } from "react-native-webview";

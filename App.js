@@ -471,13 +471,13 @@
 // export default App;
 
 import React from "react";
+import { LogBox, StatusBar } from "react-native";
+import { useTheme, ThemeProvider } from "./API/ThemeContext";
 import Settings from "./screens/Setting";
 import ContactUs from "./screens/ContactUs";
 import NewsScreen from "./screens/NewsScreen";
 import LinkViewer from "./components/LinkViewer";
-import { LogBox, StatusBar } from "react-native";
 import BookmarkNews from "./screens/BookmarkNews";
-import { ThemeProvider } from "./API/ThemeContext";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import DiscoverScreen from "./screens/DiscoverScreen";
 import TermsOfService from "./screens/TermsOfService";
@@ -519,6 +519,7 @@ function FeedsStack() {
     </Stack.Navigator>
   );
 }
+
 function SettingsStack() {
   return (
     <Stack.Navigator>
@@ -618,15 +619,26 @@ function App() {
     <SafeAreaProvider>
       <ThemeProvider>
         <BookmarkProvider>
-          <SafeAreaView style={{ flex: 1 }}>
-            <StatusBar />
-            <NavigationContainer>
-              <MyTabs />
-            </NavigationContainer>
-          </SafeAreaView>
+          <ThemedApp />
         </BookmarkProvider>
       </ThemeProvider>
     </SafeAreaProvider>
+  );
+}
+
+function ThemedApp() {
+  const { isDarkMode } = useTheme();
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar
+        barStyle={isDarkMode ? "light-content" : "dark-content"}
+        backgroundColor={isDarkMode ? "#282C35" : "#f1f1f1"}
+      />
+      <NavigationContainer>
+        <MyTabs />
+      </NavigationContainer>
+    </SafeAreaView>
   );
 }
 

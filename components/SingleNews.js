@@ -11,6 +11,7 @@ import ImageViewer from "../components/ImageViewer";
 import { useBookmarks } from "../API/BookmarkContext";
 import useDynamicStyles from "../API/UseDynamicStyles";
 import { useNavigation } from "@react-navigation/native";
+import { Platform } from "react-native";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -109,7 +110,8 @@ const SingleNews = ({ item }) => {
 const styles = StyleSheet.create({
   container: {
     width: windowWidth,
-    height: windowHeight - 60,
+    height: windowHeight - 70,
+    paddingBottom: Platform.OS === "ios" ? 90 : 70, // Adjust the bottom padding for iOS devices
   },
   imageContainer: {
     backgroundColor: "white",
@@ -151,11 +153,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   readMoreFooter: {
-    bottom: 10,
+    bottom: 0,
     height: 80,
     padding: 15,
     width: "100%",
-    position: "absolute",
+    position: Platform.OS === "ios" ? "relative" : "absolute", // Position relative for iOS
     justifyContent: "center",
   },
   readMoreContent: {
