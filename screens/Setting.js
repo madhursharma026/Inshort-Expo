@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "../API/ThemeContext";
 import useDynamicStyles from "../API/UseDynamicStyles";
+import { useLanguage } from "../API/LanguageContext"; // Import useLanguage
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, Switch, StyleSheet, TouchableOpacity } from "react-native";
 
@@ -9,15 +10,15 @@ const Settings = () => {
   const navigation = useNavigation();
   const dynamicStyles = useDynamicStyles();
   const { isDarkMode, toggleTheme } = useTheme();
-  const [language, setLanguage] = useState("English");
+  const { language, updateLanguage } = useLanguage(); // Use language context
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const toggleDropdown = () => {
     setDropdownVisible((prevVisible) => !prevVisible);
   };
 
-  const handleLanguageChange = (lang) => {
-    setLanguage(lang);
+  const handleLanguageChange = (lang, code) => {
+    updateLanguage(code); // Pass the language code
     setDropdownVisible(false);
   };
 
@@ -72,7 +73,7 @@ const Settings = () => {
           style={styles.languageButton}
         >
           <Text style={[styles.languageText, dynamicStyles.textColor]}>
-            {language}
+            {language === "en" ? "English" : "Hindi"}
           </Text>
           <Ionicons
             name={dropdownVisible ? "chevron-up" : "chevron-down"}
@@ -85,7 +86,7 @@ const Settings = () => {
       {dropdownVisible && (
         <View style={[styles.dropdown, dynamicStyles.footerBackgroundColor]}>
           <TouchableOpacity
-            onPress={() => handleLanguageChange("English")}
+            onPress={() => handleLanguageChange("English", "en")}
             style={styles.dropdownItem}
           >
             <Text style={[styles.dropdownText, dynamicStyles.footerTextColor]}>
@@ -93,7 +94,7 @@ const Settings = () => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => handleLanguageChange("Hindi")}
+            onPress={() => handleLanguageChange("Hindi", "hi")}
             style={styles.dropdownItem}
           >
             <Text style={[styles.dropdownText, dynamicStyles.footerTextColor]}>

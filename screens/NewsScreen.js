@@ -1,33 +1,36 @@
+import React, { useState, useEffect } from "react";
 import { APIURL } from "../API/api";
 import Carousel from "react-native-snap-carousel";
 import SingleNews from "../components/SingleNews";
-import React, { useState, useEffect } from "react";
 import useDynamicStyles from "../API/UseDynamicStyles";
 import { Dimensions, StyleSheet, View, Text } from "react-native";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import { useLanguage } from "../API/LanguageContext"; // Import useLanguage
 
 const client = new ApolloClient({
   uri: APIURL,
   cache: new InMemoryCache(),
 });
 
-const GET_NEWS_QUERY = gql`
-  query GetNews {
-    news {
+const GET_NEWS_BY_LANGUAGE_QUERY = gql`
+  query GetNewsByLanguage($language: String!) {
+    newsByLanguage(language: $language) {
       id
-      url
-      title
       author
-      urlToImage
       description
       publishedAt
       readMoreContent
+      title
+      url
+      urlToImage
+      language
     }
   }
 `;
 
 const NewsScreen = () => {
   const dynamicStyles = useDynamicStyles();
+  const { language } = useLanguage(); // Use selected language
   const [articles, setArticles] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -36,8 +39,11 @@ const NewsScreen = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const { data } = await client.query({ query: GET_NEWS_QUERY });
-        setArticles(data.news);
+        const { data } = await client.query({
+          query: GET_NEWS_BY_LANGUAGE_QUERY,
+          variables: { language },
+        });
+        setArticles(data.newsByLanguage);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -46,7 +52,7 @@ const NewsScreen = () => {
     };
 
     fetchArticles();
-  }, []);
+  }, [language]); // Refetch articles whenever language changes
 
   const renderCarouselItem = ({ item, index }) => (
     <SingleNews item={item} index={index} />
@@ -82,6 +88,8 @@ const NewsScreen = () => {
         itemHeight={windowHeight}
         vertical
         renderItem={renderCarouselItem}
+        inactiveSlideScale={1}
+        inactiveSlideOpacity={1}
       />
     );
   };
@@ -93,15 +101,16 @@ const NewsScreen = () => {
   );
 };
 
-export default NewsScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
   },
   messageText: {
     fontSize: 18,
+    textAlign: "center",
   },
 });
+
+export default NewsScreen;

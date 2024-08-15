@@ -486,6 +486,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { CommonActions, NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { LanguageProvider } from "./API/LanguageContext";
 
 LogBox.ignoreAllLogs();
 const Tab = createBottomTabNavigator();
@@ -618,9 +619,11 @@ function App() {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <BookmarkProvider>
-          <ThemedApp />
-        </BookmarkProvider>
+        <LanguageProvider>
+          <BookmarkProvider>
+            <ThemedApp />
+          </BookmarkProvider>
+        </LanguageProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );
