@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   },
   readMoreFooter: {
     bottom: 0,
-    height: 70,
+    height: 80,
     padding: 15,
     width: "100%",
     justifyContent: "center",
