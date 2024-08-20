@@ -470,23 +470,24 @@
 
 // export default App;
 
-import React from "react";
-import { LogBox, StatusBar } from "react-native";
-import { useTheme, ThemeProvider } from "./API/ThemeContext";
+import React, { useEffect } from "react";
 import Settings from "./screens/Setting";
 import ContactUs from "./screens/ContactUs";
 import NewsScreen from "./screens/NewsScreen";
+import { LogBox, StatusBar } from "react-native";
 import LinkViewer from "./components/LinkViewer";
 import BookmarkNews from "./screens/BookmarkNews";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import DiscoverScreen from "./screens/DiscoverScreen";
 import TermsOfService from "./screens/TermsOfService";
+import { setupOneSignal } from "./API/SetupOneSignal";
+import { LanguageProvider } from "./API/LanguageContext";
 import { BookmarkProvider } from "./API/BookmarkContext";
+import { useTheme, ThemeProvider } from "./API/ThemeContext";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { CommonActions, NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { LanguageProvider } from "./API/LanguageContext";
 
 LogBox.ignoreAllLogs();
 const Tab = createBottomTabNavigator();
@@ -616,6 +617,9 @@ function MyTabs() {
 }
 
 function App() {
+  useEffect(() => {
+    setupOneSignal();
+  }, []);
   return (
     <SafeAreaProvider>
       <ThemeProvider>

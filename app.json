@@ -15,7 +15,8 @@
       "supportsTablet": true,
       "runtimeVersion": {
         "policy": "appVersion"
-      }
+      },
+      "bundleIdentifier": "test"
     },
     "android": {
       "adaptiveIcon": {
@@ -34,11 +35,20 @@
     "extra": {
       "eas": {
         "projectId": "9ab30e85-aada-47f0-8e38-107653ab4ba3"
-      }
+      },
+      "oneSignalAppId": "c83caf5f-34b2-47c8-b7cd-59ce6639285e"
     },
     "owner": "madhur_sharma026",
     "updates": {
       "url": "https://u.expo.dev/9ab30e85-aada-47f0-8e38-107653ab4ba3"
-    }
+    },
+    "plugins": [
+      [
+        "onesignal-expo-plugin",
+        {
+          "mode": "development"
+        }
+      ]
+    ]
   }
 }
